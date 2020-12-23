@@ -6,10 +6,10 @@ using SRConnect.Views;
 
 namespace SRConnect
 {
-    public partial class App : Application
+    public partial class FormsApp : Application
     {
 
-        public App()
+        public FormsApp()
         {
             InitializeComponent();
 
