@@ -7,10 +7,11 @@ using Xamarin.Forms;
 
 using SRConnect.Models;
 using SRConnect.Services;
+using MvvmCross.ViewModels;
 
 namespace SRConnect.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : MvxViewModel
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 

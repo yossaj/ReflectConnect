@@ -14,7 +14,6 @@ namespace SRConnect
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()

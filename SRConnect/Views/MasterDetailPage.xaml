@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<views:MvxMasterDetailPage
+    x:TypeArguments="viewModels:MasterDetailViewModel"
+    xmlns:viewModels="clr-namespace:SRConnect.ViewModels;assembly=SRConnect"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:pages="clr-namespace:SRConnect.Views"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SRConnect.Views.MasterDetailPage"
+    >
+</views:MvxMasterDetailPage>

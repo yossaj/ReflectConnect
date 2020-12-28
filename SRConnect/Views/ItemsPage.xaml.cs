@@ -10,18 +10,19 @@ using Xamarin.Forms.Xaml;
 using SRConnect.Models;
 using SRConnect.Views;
 using SRConnect.ViewModels;
+using MvvmCross.Forms.Views;
+using MvvmCross.Forms.Presenters.Attributes;
 
 namespace SRConnect.Views
 {
-    public partial class ItemsPage : ContentPage
+    [MvxMasterDetailPagePresentation(MasterDetailPosition.Detail, WrapInNavigationPage = true, NoHistory = true)]
+    public partial class ItemsPage : MvxContentPage<ItemsViewModel>
     {
-        ItemsViewModel viewModel;
 
         public ItemsPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ItemsViewModel();
         }
 
         async void OnItemSelected(object sender, EventArgs args)
@@ -36,12 +37,5 @@ namespace SRConnect.Views
             await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Items.Count == 0)
-                viewModel.IsBusy = true;
-        }
     }
 }

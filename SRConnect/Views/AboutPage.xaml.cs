@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using MvvmCross.Forms.Presenters.Attributes;
+using MvvmCross.Forms.Views;
+using SRConnect.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace SRConnect.Views
 {
-    public partial class AboutPage : ContentPage
+    [MvxMasterDetailPagePresentation(WrapInNavigationPage = true, NoHistory = true)]
+    public partial class AboutPage : MvxContentPage<AboutViewModel>
     {
         public AboutPage()
         {
