@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MvvmCross.Commands;
 using SRConnect.Models;
 
 namespace SRConnect.Services
@@ -14,12 +15,12 @@ namespace SRConnect.Services
         {
             items = new List<Item>()
             {
-                new Item { Id = Guid.NewGuid().ToString(), Text = "First item", Description="This is an item description." },
+                new Item { Id = Guid.NewGuid().ToString(), Text = "First item", Description="This is an item description.", Connect = new MvxCommand( () => Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("skd", "smd"))},
                 new Item { Id = Guid.NewGuid().ToString(), Text = "Second item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Third item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Fourth item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Fifth item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Sixth item", Description="This is an item description." }
+                //new Item { Id = Guid.NewGuid().ToString(), Text = "Third item", Description="This is an item description." },
+                //new Item { Id = Guid.NewGuid().ToString(), Text = "Fourth item", Description="This is an item description." },
+                //new Item { Id = Guid.NewGuid().ToString(), Text = "Fifth item", Description="This is an item description." },
+                //new Item { Id = Guid.NewGuid().ToString(), Text = "Sixth item", Description="This is an item description." }
             };
         }
 

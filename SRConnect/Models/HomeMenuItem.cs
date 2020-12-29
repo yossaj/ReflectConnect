@@ -17,5 +17,7 @@ namespace SRConnect.Models
         public string Title { get; set; }
 
         public IMvxCommand Navigate { get; set; }
+
+
     }
 }

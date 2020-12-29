@@ -29,6 +29,14 @@ namespace SRConnect.ViewModels
             });
         }
 
+        public override async Task Initialize()
+        {
+            await ExecuteLoadItemsCommand();
+            await base.Initialize();
+            
+            
+        }
+
         async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;

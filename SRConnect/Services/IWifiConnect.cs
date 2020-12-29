@@ -3,6 +3,6 @@ namespace SRConnect.Services
 {
     public interface IWifiConnect
     {
-        void ConnectToWifi();
+        void ConnectToWifi(string ssid, string password);
     }
 }
