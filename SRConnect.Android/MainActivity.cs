@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using MvvmCross.Forms.Platforms.Android.Core;
 using MvvmCross.Forms.Platforms.Android.Views;
+using Android.Content;
 
 namespace SRConnect.Droid
 {

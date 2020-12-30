@@ -12,6 +12,7 @@ using SRConnect.Views;
 using SRConnect.ViewModels;
 using MvvmCross.Forms.Views;
 using MvvmCross.Forms.Presenters.Attributes;
+using SRConnect.Services;
 
 namespace SRConnect.Views
 {
@@ -25,11 +26,12 @@ namespace SRConnect.Views
 
         }
 
-        async void OnItemSelected(object sender, EventArgs args)
+        void OnItemSelected(object sender, EventArgs args)
         {
-            var layout = (BindableObject)sender;
-            var item = (Item)layout.BindingContext;
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("", "");
+            //var layout = (BindableObject)sender;
+            //var item = (Item)layout.BindingContext;
+            //await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)

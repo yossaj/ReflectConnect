@@ -2,6 +2,7 @@
 using NetworkExtension;
 using SRConnect.iOS;
 using SRConnect.Services;
+using UIKit;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(WifiConnectServiceIOS))]
@@ -20,6 +21,15 @@ namespace SRConnect.iOS
             {
                 if (error != null)
                 {
+                    //var dismissed = UIAlertAction();
+
+                    var alert = UIAlertController.Create(ssid, password, UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("OK" , UIAlertActionStyle.Default, (UIAlertAction obj) =>
+                    {
+
+                    }));
+                    var rootVC = UIApplication.SharedApplication.Windows[0].RootViewController;
+                    rootVC.PresentViewController(alert, true, null);
                     Console.WriteLine($"Error while connecting to WiFi network {ssid}: {error}");
                 }
             });
