@@ -13,10 +13,9 @@ using Xamarin.Forms.Internals;
 namespace SRConnect.Droid
 {
 
-    public class WifiConnectService: IWifiConnect
+    public class WifiConnectService : IWifiConnect
     {
-        [Obsolete]
-        public void ConnectToWifi(string ssid, string password)
+        public async void ConnectToWifi(string ssid, string password)
         {
             if (Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.Q)
             {
@@ -31,37 +30,47 @@ namespace SRConnect.Droid
 
                 var wifiManager = (WifiManager)Android.App.Application.Context
                         .GetSystemService(Context.WifiService);
-
-                //var addNetwork = wifiManager.AddNetwork(wifiConfig);
-
-                //var networks = wifiManager.ConfiguredNetworks;
-
-                WifiBroadcastReciver wifiBroadcastReciver = new WifiBroadcastReciver(wifiManager);
+                WifiBroadcastReciver wifiBroadcastReciver = new WifiBroadcastReciver(wifiManager, wifiConfig);
                 Android.App.Application.Context
                     .RegisterReceiver(
                     wifiBroadcastReciver,
                     new IntentFilter(WifiManager.ScanResultsAvailableAction)
                     );
 
-                bool checkpass = wifiManager.StartScan();
-                if (checkpass)
+                wifiManager.StartScan();
+                var availableNetworks = wifiManager.ScanResults;
+
+                var addNetwork = wifiManager.AddNetwork(wifiConfig);
+                var network = new WifiConfiguration();
+
+                IList<Android.Net.Wifi.WifiConfiguration> networks = wifiManager.ConfiguredNetworks.ToList<WifiConfiguration>();
+                foreach (var n in networks)
                 {
-                    Application.Current.MainPage.DisplayAlert("Wifi Test", "Scanning", "OK");
+                    Console.WriteLine($"Config Networks: {n.Bssid}");
+                    //await Application.Current.MainPage.DisplayAlert("Wifi Test", n.Ssid, "OK");
+                    if (n.Ssid == formattedSsid)
+                    {
+                        network = n;
+                    }
                 }
-                else
+
+                if (network == null)
                 {
-                    Application.Current.MainPage.DisplayAlert("Wifi Test", "Unable to scan", "OK");
+                    //await Application.Current.MainPage.DisplayAlert("Wifi Test: No Luck", "Booo!", "OK");
+                    Console.WriteLine($"Cannot connect to network: {ssid}");
+                    return;
                 }
 
+                wifiManager.Disconnect();
+                var enableNetwork = wifiManager.EnableNetwork(network.NetworkId, true);
+                wifiManager.Reconnect();
 
-                //Application.Current.MainPage.DisplayAlert("Wifi Test", $"Available network: \n {networkssids}", "OK");
-
-                //if (network == null)
-                //{
-                //    Console.WriteLine($"Cannot connect to network: {formattedSsid}");
-                //Application.Current.MainPage.DisplayAlert("Wifi Test", $"Cannot connect to network: {formattedSsid}", "OK");
-                //    return;
-                //}
+                //WifiBroadcastReciver wifiBroadcastReciver = new WifiBroadcastReciver(wifiManager, wifiConfig);
+                //Android.App.Application.Context
+                //    .RegisterReceiver(
+                //    wifiBroadcastReciver,
+                //    new IntentFilter(WifiManager.ScanResultsAvailableAction)
+                //    );
 
             }
             else
@@ -82,7 +91,7 @@ namespace SRConnect.Droid
                 NetworkCallback networkCallback = new NetworkCallback(connectivityManager);
             }
 
-     
+
 
             //Application.Current.MainPage.DisplayAlert("Wifi Test", ssid, "OK");
         }
@@ -118,30 +127,22 @@ namespace SRConnect.Droid
         private class WifiBroadcastReciver : BroadcastReceiver
         {
             WifiManager wifiManager;
-            public WifiBroadcastReciver(WifiManager mWifiManager)
+            WifiConfiguration wifiConfiguration;
+            public WifiBroadcastReciver(WifiManager mWifiManager, WifiConfiguration wifiConfig)
             {
                 wifiManager = mWifiManager;
+                wifiConfiguration = wifiConfig;
             }
-    
+
             public override void OnReceive(Context context, Intent intent)
             {
 
                 if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
                 {
-                    
                     var mScanResults = wifiManager.ScanResults;
-                    string networkssids = "";
-                    mScanResults.ForEach(n =>
-                        networkssids += $"{n.Ssid} \n"
-                    );
-                    Application.Current.MainPage.DisplayAlert("Wifi Test", $"Available network: \n {networkssids}", "OK");
                 }
             }
         }
-
-
     }
-
-
 }
 
