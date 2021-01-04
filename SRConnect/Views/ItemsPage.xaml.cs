@@ -24,7 +24,6 @@ namespace SRConnect.Views
         public ItemsPage()
         {
             InitializeComponent();
-
         }
 
         async void OnItemSelected(object sender, EventArgs args)
@@ -61,6 +60,8 @@ namespace SRConnect.Views
             var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
             return status == PermissionStatus.Granted;
         }
+
+
 
     }
 }

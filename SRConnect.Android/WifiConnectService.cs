@@ -47,7 +47,6 @@ namespace SRConnect.Droid
                 foreach (var n in networks)
                 {
                     Console.WriteLine($"Config Networks: {n.Bssid}");
-                    //await Application.Current.MainPage.DisplayAlert("Wifi Test", n.Ssid, "OK");
                     if (n.Ssid == formattedSsid)
                     {
                         network = n;
@@ -56,7 +55,6 @@ namespace SRConnect.Droid
 
                 if (network == null)
                 {
-                    //await Application.Current.MainPage.DisplayAlert("Wifi Test: No Luck", "Booo!", "OK");
                     Console.WriteLine($"Cannot connect to network: {ssid}");
                     return;
                 }
@@ -65,12 +63,7 @@ namespace SRConnect.Droid
                 var enableNetwork = wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
 
-                //WifiBroadcastReciver wifiBroadcastReciver = new WifiBroadcastReciver(wifiManager, wifiConfig);
-                //Android.App.Application.Context
-                //    .RegisterReceiver(
-                //    wifiBroadcastReciver,
-                //    new IntentFilter(WifiManager.ScanResultsAvailableAction)
-                //    );
+
 
             }
             else

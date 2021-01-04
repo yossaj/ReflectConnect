@@ -9,6 +9,6 @@ namespace SRConnect.Models
         public bool Connected { get; set; }
         public bool Connecting { get; set; }
         public bool Saved { get; set; }
-        public bool DeviceName { get; set; }
+        public string DeviceName { get; set; }
     }
 }
