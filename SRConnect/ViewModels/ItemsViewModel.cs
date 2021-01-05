@@ -9,24 +9,35 @@ using SRConnect.Models;
 using SRConnect.Views;
 using SRConnect.Services;
 using Xamarin.Essentials;
+using System.Collections.Generic;
 
 namespace SRConnect.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        private ObservableCollection<Item> availableNetworks { get; set; }
+        public ObservableCollection<Item> AvailableNetworks
+        {
+            get => availableNetworks;
+            set
+            {
+                availableNetworks = value;
+                RaisePropertyChanged(() => AvailableNetworks);
+            }
+        }
+
         public Command LoadItemsCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            AvailableNetworks = new ObservableCollection<Item>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
             {
                 var newItem = item as Item;
-                Items.Add(newItem);
+                AvailableNetworks.Add(newItem);
                 await DataStore.AddItemAsync(newItem);
             });
         }
@@ -68,15 +79,21 @@ namespace SRConnect.ViewModels
             }
         }
 
-        public async void ShowNetworks()
+        public void ShowNetworks()
         {
-            var networks = Xamarin.Forms.DependencyService.Get<IWifiScan>().ScanForAvailableNetworks();
-            var networkNames = "";
-            foreach (var network in networks)
+            Xamarin.Forms.DependencyService.Get<IWifiScan>().ScanForAvailableNetworks();
+           
+            MessagingCenter.Subscribe<object, IList<WifiNetwork>>(Application.Current, "WifiList", async (sender, wifiNetworks) =>
             {
-                networkNames += network.SSID + "\n";
-            }
-            await Application.Current.MainPage.DisplayAlert("Network Test", networkNames, "OK");
+                string networkNames = "";
+                foreach (var network in wifiNetworks)
+                {
+                    networkNames += network.SSID + "\n";
+                }
+                await Application.Current.MainPage.DisplayAlert("Network Test", networkNames, "OK");
+            });
+
+            
         }
 
 
@@ -86,11 +103,11 @@ namespace SRConnect.ViewModels
 
             try
             {
-                Items.Clear();
+                AvailableNetworks.Clear();
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    AvailableNetworks.Add(item);
                 }
             }
             catch (Exception ex)

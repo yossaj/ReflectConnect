@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Net.Wifi;
+using AndroidX.Lifecycle;
 using SRConnect.Droid;
 using SRConnect.Models;
 using SRConnect.Services;
@@ -14,6 +16,7 @@ namespace SRConnect.Droid
     public class ScanWifiService : IWifiScan
     {
 
+
         public static IList<ScanResult> ScanResults;
         public ScanWifiService()
         {
@@ -21,11 +24,11 @@ namespace SRConnect.Droid
 
         }
 
-        public List<WifiNetwork> ScanForAvailableNetworks()
+        public void ScanForAvailableNetworks()
         {
             var wifiManager = (WifiManager)Android.App.Application.Context.GetSystemService(Context.WifiService);
 
-            WifiBroadcastReciver wifiBroadcastReceiver = new WifiBroadcastReciver(wifiManager);
+            WifiBroadcastReceiver wifiBroadcastReceiver = new WifiBroadcastReceiver(wifiManager);
             Android.App.Application.Context
                 .RegisterReceiver(
                 wifiBroadcastReceiver,
@@ -34,41 +37,12 @@ namespace SRConnect.Droid
 
             wifiManager.StartScan();
 
-            List<WifiNetwork> AvailableNetworks = new List<WifiNetwork>();
-            if (ScanResults == null)
-            {
-                AvailableNetworks.Add(
-                    new WifiNetwork
-                    {
-                        SSID = "ScanFailed"
-                    }
-                    );
-                return AvailableNetworks;
-            }
-
-            
-            foreach (var network in ScanResults)
-            {
-                AvailableNetworks.Add(
-                    new WifiNetwork
-                    {
-                        SSID = network.Ssid,
-                        DeviceName = network.Ssid,
-                        Connected = false,
-                        Connecting = false,
-                        Saved = false
-                    }
-                    );
-            }
-
-
-            return AvailableNetworks;
         }
 
-        private class WifiBroadcastReciver : BroadcastReceiver
+        private class WifiBroadcastReceiver : BroadcastReceiver
         {
             WifiManager wifiManager;
-            public WifiBroadcastReciver(WifiManager mWifiManager)
+            public WifiBroadcastReceiver(WifiManager mWifiManager)
             {
                 wifiManager = mWifiManager;
             }
@@ -77,7 +51,34 @@ namespace SRConnect.Droid
             {
                 if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
                 {
-                    ScanResults = wifiManager.ScanResults;
+                    IList<ScanResult> scanResults = wifiManager.ScanResults;
+                    List<WifiNetwork> AvailableNetworks = new List<WifiNetwork>();
+                    if (scanResults == null)
+                    {
+                        AvailableNetworks.Add(
+                            new WifiNetwork
+                            {
+                                SSID = "ScanFailed"
+                            }
+                            );
+                    }
+
+
+                    foreach (var network in scanResults)
+                    {
+                        AvailableNetworks.Add(
+                            new WifiNetwork
+                            {
+                                SSID = network.Ssid,
+                                DeviceName = network.Ssid,
+                                Connected = false,
+                                Connecting = false,
+                                Saved = false
+                            }
+                            );
+                    }
+
+                    MessagingCenter.Send<object, IList<WifiNetwork>>(Application.Current, "WifiList", AvailableNetworks);
                 }
             }
         }
