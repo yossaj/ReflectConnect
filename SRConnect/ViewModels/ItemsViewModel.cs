@@ -2,11 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
 using SRConnect.Models;
-using SRConnect.Views;
 using SRConnect.Services;
 using Xamarin.Essentials;
 using System.Collections.Generic;

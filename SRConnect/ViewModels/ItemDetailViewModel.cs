@@ -6,11 +6,11 @@ namespace SRConnect.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public WifiNetwork WifiNetwork { get; set; }
+        public ItemDetailViewModel(WifiNetwork wifiNetwork = null)
         {
-            Title = item?.Text;
-            Item = item;
+            Title = wifiNetwork?.SSID;
+            WifiNetwork = wifiNetwork;
         }
     }
 }

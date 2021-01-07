@@ -13,7 +13,7 @@ namespace SRConnect
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            //DependencyService.Register<MockDataStore>();
         }
 
         protected override void OnStart()

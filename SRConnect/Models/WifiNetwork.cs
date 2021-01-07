@@ -1,4 +1,6 @@
 ﻿using System;
+using MvvmCross.Commands;
+
 namespace SRConnect.Models
 {
     public class WifiNetwork
@@ -10,5 +12,6 @@ namespace SRConnect.Models
         public bool Connecting { get; set; }
         public bool Saved { get; set; }
         public string DeviceName { get; set; }
+        public IMvxCommand Connect { get; set; }
     }
 }

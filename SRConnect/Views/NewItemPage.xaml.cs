@@ -10,16 +10,16 @@ namespace SRConnect.Views
 {
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+        public WifiNetwork WifiNetwork { get; set; }
 
         public NewItemPage()
         {
             InitializeComponent();
 
-            Item = new Item
+            WifiNetwork = new WifiNetwork
             {
-                Text = "Item name",
-                Description = "This is an item description."
+                SSID = "Item name",
+                DeviceName = "This is an item description."
             };
 
             BindingContext = this;
@@ -27,7 +27,7 @@ namespace SRConnect.Views
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
+            MessagingCenter.Send(this, "AddItem", WifiNetwork);
             await Navigation.PopModalAsync();
         }
 

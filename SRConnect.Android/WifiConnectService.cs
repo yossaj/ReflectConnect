@@ -53,9 +53,6 @@ namespace SRConnect.Droid
                 wifiManager.Disconnect();
                 var enableNetwork = wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
-
-
-
             }
             else
             {
@@ -74,10 +71,6 @@ namespace SRConnect.Droid
 
                 NetworkCallback networkCallback = new NetworkCallback(connectivityManager);
             }
-
-
-
-            //Application.Current.MainPage.DisplayAlert("Wifi Test", ssid, "OK");
         }
 
 
