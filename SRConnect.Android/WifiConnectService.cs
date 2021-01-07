@@ -30,15 +30,6 @@ namespace SRConnect.Droid
 
                 var wifiManager = (WifiManager)Android.App.Application.Context
                         .GetSystemService(Context.WifiService);
-                WifiBroadcastReciver wifiBroadcastReciver = new WifiBroadcastReciver(wifiManager, wifiConfig);
-                Android.App.Application.Context
-                    .RegisterReceiver(
-                    wifiBroadcastReciver,
-                    new IntentFilter(WifiManager.ScanResultsAvailableAction)
-                    );
-
-                wifiManager.StartScan();
-                var availableNetworks = wifiManager.ScanResults;
 
                 var addNetwork = wifiManager.AddNetwork(wifiConfig);
                 var network = new WifiConfiguration();
@@ -114,26 +105,6 @@ namespace SRConnect.Droid
                 base.OnUnavailable();
 
                 NetworkUnavailable?.Invoke();
-            }
-        }
-
-        private class WifiBroadcastReciver : BroadcastReceiver
-        {
-            WifiManager wifiManager;
-            WifiConfiguration wifiConfiguration;
-            public WifiBroadcastReciver(WifiManager mWifiManager, WifiConfiguration wifiConfig)
-            {
-                wifiManager = mWifiManager;
-                wifiConfiguration = wifiConfig;
-            }
-
-            public override void OnReceive(Context context, Intent intent)
-            {
-
-                if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
-                {
-                    var mScanResults = wifiManager.ScanResults;
-                }
             }
         }
     }

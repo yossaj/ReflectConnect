@@ -31,14 +31,14 @@ namespace SRConnect.Views
             bool hasLocationPermission = await CheckLocationPermission();
             if (hasLocationPermission)
             {
-                Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("", "");
+                Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("VM6980772", "6gmvhqsXnthr");
             }
             else
             {
                 await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
                 if(await CheckLocationPermission())
                 {
-                    Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("", "");
+                    Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("VM6980772", "6gmvhqsXnthr");
                 }
                 else
                 {

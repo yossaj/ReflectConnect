@@ -84,7 +84,6 @@ namespace SRConnect.ViewModels
             Xamarin.Forms.DependencyService.Get<IWifiScan>().ScanForAvailableNetworks();
             MessagingCenter.Subscribe<object, IList<WifiNetwork>>(Application.Current, "WifiList", async (sender, wifiNetworks) =>
             {
-                
                 try
                 {
                     AvailableNetworks.Clear();
