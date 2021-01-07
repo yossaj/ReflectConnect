@@ -15,8 +15,8 @@ namespace SRConnect.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private ObservableCollection<Item> availableNetworks { get; set; }
-        public ObservableCollection<Item> AvailableNetworks
+        private ObservableCollection<WifiNetwork> availableNetworks { get; set; }
+        public ObservableCollection<WifiNetwork> AvailableNetworks
         {
             get => availableNetworks;
             set
@@ -26,25 +26,24 @@ namespace SRConnect.ViewModels
             }
         }
 
-        public Command LoadItemsCommand { get; set; }
+        public Command ScanForNetworksCommand { get; set; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            AvailableNetworks = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            AvailableNetworks = new ObservableCollection<WifiNetwork>();
+            ScanForNetworksCommand = new Command(async () => await ScanForNetworksAsync());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Item;
-                AvailableNetworks.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
+            //MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            //{
+            //    var newItem = item as Item;
+            //    AvailableNetworks.Add(newItem);
+            //    await DataStore.AddItemAsync(newItem);
+            //});
         }
 
         public override async Task Initialize()
         {
-            await ExecuteLoadItemsCommand();
             await ScanForNetworksAsync();
             await base.Initialize();
         }
@@ -81,43 +80,28 @@ namespace SRConnect.ViewModels
 
         public void ShowNetworks()
         {
+            IsBusy = true;
             Xamarin.Forms.DependencyService.Get<IWifiScan>().ScanForAvailableNetworks();
-           
             MessagingCenter.Subscribe<object, IList<WifiNetwork>>(Application.Current, "WifiList", async (sender, wifiNetworks) =>
             {
-                string networkNames = "";
-                foreach (var network in wifiNetworks)
+                
+                try
                 {
-                    networkNames += network.SSID + "\n";
+                    AvailableNetworks.Clear();
+                    foreach (var network in wifiNetworks)
+                    {
+                        AvailableNetworks.Add(network);
+                    }
                 }
-                await Application.Current.MainPage.DisplayAlert("Network Test", networkNames, "OK");
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
             });
-
-            
-        }
-
-
-        async Task ExecuteLoadItemsCommand()
-        {
-            IsBusy = true;
-
-            try
-            {
-                AvailableNetworks.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    AvailableNetworks.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
         }
     }
 }
