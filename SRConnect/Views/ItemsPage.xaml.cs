@@ -26,30 +26,6 @@ namespace SRConnect.Views
             InitializeComponent();
         }
 
-        async void OnItemSelected(object sender, EventArgs args)
-        {
-            bool hasLocationPermission = await CheckLocationPermission();
-            if (hasLocationPermission)
-            {
-                Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("VM6980772", "6gmvhqsXnthr");
-            }
-            else
-            {
-                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-                if(await CheckLocationPermission())
-                {
-                    Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi("VM6980772", "6gmvhqsXnthr");
-                }
-                else
-                {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Permission Not Granted",
-                        "Location Permission Needs to be Granted In Order to Scan Networks",
-                        "OK");
-                }
-            }
-        }
-
         async void AddItem_Clicked(object sender, EventArgs e)
         {
           await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));

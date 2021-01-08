@@ -63,7 +63,6 @@ namespace SRConnect.Droid
                             );
                     }
 
-
                     foreach (var network in scanResults)
                     {
                         AvailableNetworks.Add(
@@ -77,7 +76,6 @@ namespace SRConnect.Droid
                             }
                             );
                     }
-
                     MessagingCenter.Send<object, IList<WifiNetwork>>(Application.Current, "WifiList", AvailableNetworks);
                 }
             }

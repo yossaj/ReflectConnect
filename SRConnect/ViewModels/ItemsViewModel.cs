@@ -7,11 +7,14 @@ using SRConnect.Models;
 using SRConnect.Services;
 using Xamarin.Essentials;
 using System.Collections.Generic;
+using MvvmCross.Commands;
 
 namespace SRConnect.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
+
+
         private ObservableCollection<WifiNetwork> availableNetworks { get; set; }
         public ObservableCollection<WifiNetwork> AvailableNetworks
         {
@@ -27,6 +30,7 @@ namespace SRConnect.ViewModels
 
         public ItemsViewModel()
         {
+            var current = Connectivity.NetworkAccess;
             Title = "Browse";
             AvailableNetworks = new ObservableCollection<WifiNetwork>();
             ScanForNetworksCommand = new Command(async () => await ScanForNetworksAsync());
@@ -86,6 +90,7 @@ namespace SRConnect.ViewModels
                     AvailableNetworks.Clear();
                     foreach (var network in wifiNetworks)
                     {
+                        network.Connect = new MvxAsyncCommand(async () => await ConnectAsync(network.SSID));
                         AvailableNetworks.Add(network);
                     }
                 }
@@ -98,6 +103,31 @@ namespace SRConnect.ViewModels
                     IsBusy = false;
                 }
             });
+        }
+
+        public async Task ConnectAsync(String ssid)
+        {
+
+            bool hasLocationPermission = await CheckLocationPermission();
+            if (hasLocationPermission)
+            {
+                Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi(ssid, "");
+            }
+            else
+            {
+                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                if (await CheckLocationPermission())
+                {
+                    Xamarin.Forms.DependencyService.Get<IWifiConnect>().ConnectToWifi(ssid, "");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Permission Not Granted",
+                        "Location Permission Needs to be Granted In Order to Scan Networks",
+                        "OK");
+                }
+            }
         }
     }
 }

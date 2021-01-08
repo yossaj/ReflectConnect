@@ -53,6 +53,8 @@ namespace SRConnect.Droid
                 wifiManager.Disconnect();
                 var enableNetwork = wifiManager.EnableNetwork(network.NetworkId, true);
                 wifiManager.Reconnect();
+
+                await Application.Current.MainPage.DisplayAlert("Failed to connect", ssid, "OK");
             }
             else
             {
