@@ -42,9 +42,12 @@ namespace SRConnect.Droid
         private class WifiBroadcastReceiver : BroadcastReceiver
         {
             WifiManager wifiManager;
+            List<string> SmartSSIDs;
             public WifiBroadcastReceiver(WifiManager mWifiManager)
             {
+  
                 wifiManager = mWifiManager;
+
             }
 
             public override void OnReceive(Context context, Intent intent)
@@ -65,20 +68,36 @@ namespace SRConnect.Droid
 
                     foreach (var network in scanResults)
                     {
-                        AvailableNetworks.Add(
-                            new WifiNetwork
-                            {
-                                SSID = network.Ssid,
-                                DeviceName = network.Ssid,
-                                Connected = false,
-                                Connecting = false,
-                                Saved = false
-                            }
+                        string ssid = network.Ssid.ToLower();
+                        if (
+                        ssid.Contains("smart") ||
+                        ssid.Contains("ss") ||
+                        ssid.Contains("switch") ||
+                        ssid.Contains("opener") ||
+                        ssid.Contains("light") ||
+                        ssid.Contains("pusher") ||
+                        ssid.Contains("valve") ||
+                        ssid.Contains("reflector") ||
+                        ssid.Contains("vibrator")
+                            )
+                        {
+                            AvailableNetworks.Add(
+                                new WifiNetwork
+                                {
+                                    SSID = network.Ssid,
+                                    DeviceName = network.Ssid,
+                                    Connected = false,
+                                    Connecting = false,
+                                    Saved = false
+                                }
                             );
+                        }
                     }
                     MessagingCenter.Send<object, IList<WifiNetwork>>(Application.Current, "WifiList", AvailableNetworks);
                 }
             }
+
+
         }
 
     }
