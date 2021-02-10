@@ -9,6 +9,7 @@ namespace SRConnect.Models
     {
         Browse,
         About, 
+        Device,
     }
     public class HomeMenuItem
     {
