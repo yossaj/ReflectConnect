@@ -8,7 +8,6 @@
     xmlns:viewModels="clr-namespace:SRConnect.ViewModels;assembly=SRConnect"
     Title="{Binding Title}">
 
-    <!--Page colours-->
     <views:MvxContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
@@ -16,16 +15,11 @@
             <Color x:Key="LightTextColor">#999999</Color>
         </ResourceDictionary>
     </views:MvxContentPage.Resources>
-    
-    
     <Grid>
-        <!--Row Type-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <!--Content-->
         <StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
                 <ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
@@ -33,12 +27,8 @@
                 </ContentView>
             </StackLayout>
         </StackLayout>
-
-        <!--Layout-->
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
-                
-                <!--Text Details-->
                 <Label FontSize="22">
                     <Label.FormattedText>
                         <FormattedString>
@@ -50,8 +40,6 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                
-                <!--Information Message-->
                 <Label>
                     <Label.FormattedText>
                         <FormattedString>
@@ -60,6 +48,14 @@
                                 <Span Text=" " />
                                 <Span Text="Xamarin Platform" FontAttributes="Bold" />
                                 <Span Text="." />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
                                 <Span Text="It shares code with its" />
                                 <Span Text=" " />
                                 <Span Text="iOS, Android, and Windows" FontAttributes="Bold" />
@@ -69,29 +65,8 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-
-                <!--TAKEN OUT AS REPEAT-->
-                <!--Label>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                          ADDED TO THE ABOVE      <Span Text="It shares code with its" />
-                          ADDED TO THE ABOVE      <Span Text=" " />
-                          ADDED TO THE ABOVE      <Span Text="iOS, Android, and Windows" FontAttributes="Bold" />
-                          ADDED TO THE ABOVE     <Span Text=" " />
-                          ADDED TO THE ABOVE      <Span Text="versions." />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </-->
-
-                <!--Buttons-->
                 <Button Margin="0,10,0,0" Text="Learn more" Command="{Binding OpenWebCommand}" BackgroundColor="{StaticResource Primary}" TextColor="White" />
-            
             </StackLayout>
-            
         </ScrollView>
-        
     </Grid>
-    
 </views:MvxContentPage>

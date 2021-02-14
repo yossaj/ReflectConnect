@@ -35,7 +35,8 @@ namespace SRConnect.ViewModels
             MenuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse", Navigate = new MvxAsyncCommand(async () => await _navigationService.Navigate<ItemsViewModel>())},
-                new HomeMenuItem { Id = MenuItemType.About, Title = "About", Navigate = new MvxAsyncCommand(async () => await _navigationService.Navigate<AboutViewModel>()) }
+                new HomeMenuItem { Id = MenuItemType.About, Title = "About", Navigate = new MvxAsyncCommand(async () => await _navigationService.Navigate<AboutViewModel>()) },
+                new HomeMenuItem { Id= MenuItemType.Devices, Title="Devices", Navigate = new MvxAsyncCommand(async () => await _navigationService.Navigate<DeviceViewModel>())}
             };
             return base.Initialize();
         }

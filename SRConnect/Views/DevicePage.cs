@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 namespace SRConnect.Views
 {
     [MvxMasterDetailPagePresentation(WrapInNavigationPage = true, NoHistory = true)]
-    public partial class DevicePage : MvxContentPage<AboutViewModel>
+    public partial class DevicePage : MvxContentPage<DeviceViewModel>
     {
         public DevicePage()
         {
