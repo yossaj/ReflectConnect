@@ -4,12 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
     x:Class="SRConnect.Views.DevicePage"
+    xmlns:localconvert="clr-namespace:SRConnect.ValueConverters"
     xmlns:viewModels="clr-namespace:SRConnect.ViewModels;assembly=SRConnect"
     Title="{Binding Title}">
 
     <!--Page colours-->
     <views:MvxContentPage.Resources>
         <ResourceDictionary>
+            <localconvert:ConnectedValueConverter x:Key="IsConnected"/>
             <Color x:Key="Primary">#2196F3</Color>
             <Color x:Key="Accent">#96d1ff</Color>
             <Color x:Key="LightTextColor">#999999</Color>
@@ -31,11 +33,15 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <BoxView BackgroundColor="GreenYellow" Grid.Column="0" Grid.RowSpan="2"/>
+                        <BoxView
+                            BackgroundColor="{Binding Connected,
+                            Converter={StaticResource IsConnected}}"
+                            Grid.Column="0" Grid.RowSpan="2"
+                            CornerRadius="5"/>
 
                         <Label
                             Grid.Row="0" Grid.Column="1"
@@ -43,7 +49,7 @@
                         <Label
                             Grid.Row="1" Grid.Column="1"
                             Text="{Binding SSID}"/>
-                        <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="White" /> 
+                        <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="White" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
