@@ -10,7 +10,6 @@ namespace SRConnect.ViewModels
         public Class1()
         {
             Title = "Class";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://www.smartreflectors.com"));
         }
 
         public ICommand OpenWebCommand { get; }

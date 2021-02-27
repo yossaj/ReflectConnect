@@ -10,6 +10,7 @@ namespace SRConnect.Models
         Browse,
         About, 
         Devices,
+        Class,
     }
     public class HomeMenuItem
     {

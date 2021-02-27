@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 namespace SRConnect.Views
 {
     [MvxMasterDetailPagePresentation(WrapInNavigationPage = true, NoHistory = true)]
-    public partial class Page1 : MvxContentPage<AboutViewModel>
+    public partial class Page1 : MvxContentPage<Class1>
     {
         public Page1()
         {
