@@ -5,11 +5,14 @@ using System.Windows.Input;
 using SRConnect.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using SQLite;
 
 namespace SRConnect.ViewModels
 {
     public class DeviceViewModel : BaseViewModel
     {
+        
+
         private ObservableCollection<WifiNetwork> _deviceCollection;
         public ObservableCollection<WifiNetwork> DeviceCollection
         {
@@ -35,8 +38,10 @@ namespace SRConnect.ViewModels
                 SSID = "TestSSID",
                 DeviceName = "MySmartLight",
                 Saved = true,
-                Connected = false,
+                Connected = true,
                 Connecting = false
+
+
             };
 
             WifiNetwork wifiNetwork2 = new WifiNetwork()
