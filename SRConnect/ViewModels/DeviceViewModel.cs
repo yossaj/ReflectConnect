@@ -6,6 +6,10 @@ using SRConnect.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using SQLite;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 
 namespace SRConnect.ViewModels
 {
@@ -27,7 +31,8 @@ namespace SRConnect.ViewModels
 
         public override Task Initialize()
         {
-            DeviceCollection = SetDummyData();
+            var testdata = SetDummyData();
+            AddDatbase(testdata.ToList());
             return base.Initialize();
         }
 
@@ -68,7 +73,24 @@ namespace SRConnect.ViewModels
             return dummyCollection;
         }
 
-      
+        void AddDatbase(IList devicelist)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices_db.sqlite")))
+            {
+                conn.CreateTable<WifiNetwork>();
+                conn.InsertAll(devicelist);
+            }
+        }
+
+        ObservableCollection<WifiNetwork> GetWifiNetworks()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices_db.sqlite")))
+            {
+                conn.CreateTable<WifiNetwork>();
+                List<WifiNetwork> devicelist = conn.Table<WifiNetwork>().ToList();
+            }
+        }
+
 
 
 
