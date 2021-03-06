@@ -33,6 +33,7 @@ namespace SRConnect.ViewModels
         {
             var testdata = SetDummyData();
             AddDatbase(testdata.ToList());
+            GetWifiNetworks();
             return base.Initialize();
         }
 
