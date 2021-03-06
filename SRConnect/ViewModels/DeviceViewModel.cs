@@ -31,12 +31,15 @@ namespace SRConnect.ViewModels
 
         public override Task Initialize()
         {
-            var testdata = SetDummyData();
-            AddDatbase(testdata.ToList());
+            List<WifiNetwork> testdata = SetDummyData();
+            AddDatbase(testdata);
+            DeviceCollection = GetWifiNetworks();
             return base.Initialize();
         }
 
-        public ObservableCollection<WifiNetwork> SetDummyData()
+   
+
+        public List<WifiNetwork> SetDummyData()
         {
             WifiNetwork wifiNetwork1 = new WifiNetwork()
             {
@@ -66,11 +69,11 @@ namespace SRConnect.ViewModels
                 Connected = false,
                 Connecting = false
             };
-            ObservableCollection<WifiNetwork> dummyCollection = new ObservableCollection<WifiNetwork>();
-            dummyCollection.Add(wifiNetwork1);
-            dummyCollection.Add(wifiNetwork2);
-            dummyCollection.Add(wifiNetwork3);
-            return dummyCollection;
+            List<WifiNetwork> dummyList = new List<WifiNetwork>();
+            dummyList.Add(wifiNetwork1);
+            dummyList.Add(wifiNetwork2);
+            dummyList.Add(wifiNetwork3);
+            return dummyList;
         }
 
         void AddDatbase(IList devicelist)
@@ -88,6 +91,8 @@ namespace SRConnect.ViewModels
             {
                 conn.CreateTable<WifiNetwork>();
                 List<WifiNetwork> devicelist = conn.Table<WifiNetwork>().ToList();
+                ObservableCollection<WifiNetwork> deviceCollection = new ObservableCollection<WifiNetwork>(devicelist);
+                return deviceCollection;
             }
         }
 
