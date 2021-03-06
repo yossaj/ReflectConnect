@@ -21,11 +21,17 @@
 
     <StackLayout>
 
-        <CollectionView ItemsSource="{Binding DeviceCollection}" >
+        <CollectionView ItemsSource="{Binding DeviceCollection}" SelectedItem="{Binding ., Mode=TwoWay}" >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
 
                     <Grid Padding="5" Margin="5" BackgroundColor="Beige">
+
+                        <Grid.GestureRecognizers>
+                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -37,19 +43,25 @@
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
 
+
                         <BoxView
                             BackgroundColor="{Binding Connected,
                             Converter={StaticResource IsConnected}}"
                             Grid.Column="0" Grid.RowSpan="2"
                             CornerRadius="5"/>
 
+     
                         <Label
                             Grid.Row="0" Grid.Column="1"
                             Text="{Binding DeviceName}"/>
                         <Label
                             Grid.Row="1" Grid.Column="1"
                             Text="{Binding SSID}"/>
+                        <StackLayout>
+                           
+                        </StackLayout>
                         <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="White" />
+
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

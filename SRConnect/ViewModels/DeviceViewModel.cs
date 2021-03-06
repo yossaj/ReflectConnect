@@ -10,12 +10,13 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using MvvmCross.Commands;
 
 namespace SRConnect.ViewModels
 {
     public class DeviceViewModel : BaseViewModel
     {
-        
+     
 
         private ObservableCollection<WifiNetwork> _deviceCollection;
         public ObservableCollection<WifiNetwork> DeviceCollection
@@ -29,9 +30,12 @@ namespace SRConnect.ViewModels
             Title = "Devices";
         }
 
+        public MvxCommand<WifiNetwork> DeleteDeviceCommand { get; set; }
+
         public override Task Initialize()
         {
             List<WifiNetwork> testdata = SetDummyData();
+            DeleteDeviceCommand = new MvxCommand<WifiNetwork>((device) => DeleteNetwork(device));
             AddDatbase(testdata);
             DeviceCollection = GetWifiNetworks();
             return base.Initialize();
@@ -43,7 +47,7 @@ namespace SRConnect.ViewModels
         {
             WifiNetwork wifiNetwork1 = new WifiNetwork()
             {
-                SSID = "TestSSID",
+                SSID = "TestSSID1",
                 DeviceName = "MySmartLight",
                 Saved = true,
                 Connected = true,
@@ -54,7 +58,7 @@ namespace SRConnect.ViewModels
 
             WifiNetwork wifiNetwork2 = new WifiNetwork()
             {
-                SSID = "TestSSID",
+                SSID = "TestSSID2",
                 DeviceName = "MySmartValve",
                 Saved = true,
                 Connected = true,
@@ -63,7 +67,7 @@ namespace SRConnect.ViewModels
 
             WifiNetwork wifiNetwork3 = new WifiNetwork()
             {
-                SSID = "TestSSID",
+                SSID = "TestSSID3",
                 DeviceName = "MySmartShoes",
                 Saved = true,
                 Connected = false,
@@ -83,8 +87,12 @@ namespace SRConnect.ViewModels
                 conn.CreateTable<WifiNetwork>();
                 foreach(WifiNetwork device in devicelist)
                 {
-                    var isPresent = conn.Query<WifiNetwork>($"SELECT * FROM devices WHERE SSID == {device.SSID}");
-
+                    var isPresent = conn.Query<WifiNetwork>($"SELECT * FROM devices WHERE SSID = '{device.SSID}'");
+                    if(isPresent.Count() == 0)
+                    {
+                        conn.Insert(device);
+                    }
+                    
                 }
                 
             
@@ -101,6 +109,15 @@ namespace SRConnect.ViewModels
                 ObservableCollection<WifiNetwork> deviceCollection = new ObservableCollection<WifiNetwork>(devicelist);
                 return deviceCollection;
             }
+        }
+
+        public void DeleteNetwork(WifiNetwork device)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices_db.sqlite")))
+            {
+               conn.Delete(device);
+            }
+            DeviceCollection = GetWifiNetworks();
         }
 
 
