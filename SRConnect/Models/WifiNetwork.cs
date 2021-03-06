@@ -4,6 +4,7 @@ using SQLite;
 
 namespace SRConnect.Models
 {
+    [Table("devices")]
     public class WifiNetwork
     {
        [PrimaryKey, AutoIncrement]

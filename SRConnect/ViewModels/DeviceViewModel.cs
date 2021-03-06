@@ -81,7 +81,14 @@ namespace SRConnect.ViewModels
             using (SQLiteConnection conn = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices_db.sqlite")))
             {
                 conn.CreateTable<WifiNetwork>();
-                conn.InsertAll(devicelist);
+                foreach(WifiNetwork device in devicelist)
+                {
+                    var isPresent = conn.Query<WifiNetwork>($"SELECT * FROM devices WHERE SSID == {device.SSID}");
+
+                }
+                
+            
+
             }
         }
 
