@@ -52,8 +52,6 @@ namespace SRConnect.ViewModels
                 Saved = true,
                 Connected = true,
                 Connecting = false
-
-
             };
 
             WifiNetwork wifiNetwork2 = new WifiNetwork()
@@ -92,11 +90,7 @@ namespace SRConnect.ViewModels
                     {
                         conn.Insert(device);
                     }
-                    
                 }
-                
-            
-
             }
         }
 
@@ -115,7 +109,7 @@ namespace SRConnect.ViewModels
         {
             using (SQLiteConnection conn = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "devices_db.sqlite")))
             {
-               conn.Delete(device);
+               conn.Delete(device );
             }
             DeviceCollection = GetWifiNetworks();
         }

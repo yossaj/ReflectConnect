@@ -28,6 +28,12 @@ namespace SRConnect.Views
             ViewModel.DeleteNetwork(device);
         }
 
+        void SwipeGestureRecognizer_Swiped(object sender, EventArgs e)
+        {
+            Grid grid = (Grid)sender;
+            grid.TranslateTo(-80, 0);
+        }
+
 
     }
 }
